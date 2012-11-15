@@ -2,8 +2,10 @@ var execute = require("../index")
     , readFile = require("fs").readFile
     , join = require("path").join
     , request = require("request")
+    , equal = require("assert").equal
 
-    , link = "https://raw.github.com/Raynos/xhr/master/README.md"
+    , link = "https://raw.github.com/Colingo/execute" +
+        "/master/README.md"
 
 execute({
     file: function (callback) {
@@ -18,6 +20,6 @@ execute({
     var file = String(results.file)
         , readme = String(results.readme)
 
-    console.log("file", file)
-    console.log("readme", readme)
+    equal(file, readme)
+    console.log("done")
 })

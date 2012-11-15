@@ -6,21 +6,31 @@ Execute commands in parallel
 
 ```js
 var execute = require("execute")
+    , readFile = require("fs").readFile
+    , join = require("path").join
+    , request = require("request")
+    , equal = require("assert").equal
+
+    , link = "https://raw.github.com/Colingo/execute" +
+        "/master/README.md"
 
 execute({
-    "steve": function (callback) {
-        shootHimInTheFace(callback)
-    },
-    "james": function (callback) {
-        pushHimInTheBlender(callback)
+    file: function (callback) {
+        readFile(join(__dirname, "..", "README.md"), callback)
     }
-}, function (err, corpses) {
-    if (err) {
-        return executeHenchman()
+    , readme: function (callback) {
+        request(link, function (err, res, body) {
+            callback(err, body)
+        })
     }
+}, function (err, results) {
+    var file = String(results.file)
+        , readme = String(results.readme)
 
-    dispose(corpses)
+    equal(file, readme)
+    console.log("done")
 })
+
 ```
 
 ## Installation
